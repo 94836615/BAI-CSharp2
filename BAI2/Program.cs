@@ -8,34 +8,66 @@ namespace BAI
     {
         public static bool Vooruit(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return false;
+            //bit 7 geeft aan of de trein vooruit rijdt of niet.
+            //b wordt omgezet naar binair getal en dan wordt er gekeken naar de 7de bit.
+            // wanneer deze niet 0 is dan rijdt de trein vooruit 
+            return (b & (1 << 7)) != 0;
         }
         public static uint Vermogen(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return 0;
+            // Bits 5 en 6 geven het vermogen aan.
+            // Verschuiven bits 5 en 6 naar rechts (b >> 5) en daarna maskeren met 0b11 om alleen deze bits te bekijken.
+            uint vermogenBits = (b >> 5) & 0b11;
+
+            // Aan de hand van de bits wordt het vermogen aangegeven.
+            switch (vermogenBits)
+            {
+                case 0b00:
+                    return 0;   // 0% vermogen
+                case 0b01:
+                    return 33;  // 33% vermogen
+                case 0b10:
+                    return 67;  // 67% vermogen
+                case 0b11:
+                    return 100; // 100% vermogen
+                default:
+                    return 0;   // Veiligheidsmaatregel
+            }
         }
         public static bool Wagon(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return false;
+            // bit 4 geeft aan of er een wagon aan hangt
+            // b wordt omgezet naar binair getal en dan wordt er gekeken naar de 4de bit.
+            // wanneer deze niet 0 is dan hangt er een wagon aan
+
+            return (b & (1 << 4)) != 0;
+           
         }
         public static bool Licht(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return false;
+            // bit 3 geeft aan of het licht aan is
+            // b wordt omgezet naar binair getal en dan wordt er gekeken naar de 3de bit.
+            // wanneer deze niet 0 is dan is het licht aan
+            return (b & (1 << 3)) != 0;
         }
         public static uint ID(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return 0;
+            // bits 0, 1 en 2 geven het ID aan.
+            // Maskeren met 0b111 om alleen deze bits te bekijken.
+            uint idBits = b & 0b111;
+
+            return idBits;
         }
 
         public static HashSet<uint> Alle(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+            //het is de bedoeling dat alle elementen van de inputStroom in de set worden geplaatst
+            foreach (uint item in inputStroom)
+            {
+                // Voeg het item toe aan de HashSet (dupliceer items worden automatisch genegeerd)
+                set.Add(item);
+            }
             return set;
         }
         public static HashSet<uint> ZonderLicht(List<uint> inputStroom)
