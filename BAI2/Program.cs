@@ -61,31 +61,55 @@ namespace BAI
 
         public static HashSet<uint> Alle(List<uint> inputStroom)
         {
-            HashSet<uint> set = new HashSet<uint>();
-            //het is de bedoeling dat alle elementen van de inputStroom in de set worden geplaatst
-            foreach (uint item in inputStroom)
-            {
-                // Voeg het item toe aan de HashSet (dupliceer items worden automatisch genegeerd)
-                set.Add(item);
-            }
+            // HashSet is een collectie van unieke elementen
+            // Hiermee kunnen we makkelijk de unieke elementen van de inputStroom vinden
+            HashSet<uint> set = new HashSet<uint>(inputStroom);
+          
             return set;
         }
         public static HashSet<uint> ZonderLicht(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
             // *** IMPLEMENTATION HERE *** //
+
+            foreach (uint item in inputStroom)
+            {
+                // Als het licht niet aan is, voeg het item toe aan de HashSet
+                if (!Licht(item))
+                {
+                    set.Add(item);
+                }
+            }
             return set;
         }
         public static HashSet<uint> MetWagon(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
             // *** IMPLEMENTATION HERE *** //
+
+            foreach (uint item in inputStroom)
+            {
+                // Als er een wagon aan hangt, voeg het item toe aan de HashSet
+                if (Wagon(item))
+                {
+                    set.Add(item);
+                }
+            }
             return set;
         }
         public static HashSet<uint> SelecteerID(List<uint> inputStroom, uint lower, uint upper)
         {
             HashSet<uint> set = new HashSet<uint>();
             // *** IMPLEMENTATION HERE *** //
+
+            foreach (uint item in inputStroom)
+            {
+                // Als het ID binnen de range valt, voeg het item toe aan de HashSet
+                if (ID(item) >= lower && ID(item) <= upper)
+                {
+                    set.Add(item);
+                }
+            }
             return set;
         }
 
