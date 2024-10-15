@@ -61,8 +61,8 @@ namespace BAI
 
         public static HashSet<uint> Alle(List<uint> inputStroom)
         {
-            // HashSet is een collectie van unieke elementen
-            // Hiermee kunnen we makkelijk de unieke elementen van de inputStroom vinden
+            // Hashset zorgt ervoor dat er geen dubbele waardes in de set komen
+            // De inputstroom waar alle treinen in staan wordt in de hashset gezet
             HashSet<uint> set = new HashSet<uint>(inputStroom);
           
             return set;
@@ -70,14 +70,14 @@ namespace BAI
         public static HashSet<uint> ZonderLicht(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
-
-            foreach (uint item in inputStroom)
+            //inputstroom wordt doorlopen dmv indexen en als het licht niet aan is
+            //wordt het item toegevoegd aan de hashset
+            for (int i = 0; i < inputStroom.Count; i++)
             {
                 // Als het licht niet aan is, voeg het item toe aan de HashSet
-                if (!Licht(item))
+                if (!Licht(inputStroom[i]))
                 {
-                    set.Add(item);
+                    set.Add(inputStroom[i]);
                 }
             }
             return set;
@@ -85,14 +85,14 @@ namespace BAI
         public static HashSet<uint> MetWagon(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+            //inputstroom wordt doorlopen dmv indexen en als er een wagon aan hangt wordt het item toegevoegd aan de hashset
 
-            foreach (uint item in inputStroom)
+            for (int i = 0; i < inputStroom.Count; i++)
             {
-                // Als er een wagon aan hangt, voeg het item toe aan de HashSet
-                if (Wagon(item))
+                // Als er een wagon aan hangt wordt het item toegevoegd aan de HashSet
+                if (Wagon(inputStroom[i]))
                 {
-                    set.Add(item);
+                    set.Add(inputStroom[i]);
                 }
             }
             return set;
@@ -100,14 +100,13 @@ namespace BAI
         public static HashSet<uint> SelecteerID(List<uint> inputStroom, uint lower, uint upper)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
-
-            foreach (uint item in inputStroom)
+            //inputstroom wordt doorlopen dmv indexen en als het ID tussen de lower en upper grens ligt
+            for (int i = 0; i < inputStroom.Count; i++)
             {
-                // Als het ID binnen de range valt, voeg het item toe aan de HashSet
-                if (ID(item) >= lower && ID(item) <= upper)
+                // Als het ID tussen de lower en upper grens ligt, voeg het item toe aan de HashSet
+                if (ID(inputStroom[i]) >= lower && ID(inputStroom[i]) <= upper)
                 {
-                    set.Add(item);
+                    set.Add(inputStroom[i]);
                 }
             }
             return set;
@@ -115,16 +114,34 @@ namespace BAI
 
         public static HashSet<uint> Opdr3a(List<uint> inputStroom)
         {
-            HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
-            return set;
+            // maakt hashset op basis van de functie selecteerID er worden 3 parameters meegegeven
+            // de inputstroom dat zijn all treinen, 0 en 2 zijn de lower en upper grens 
+            HashSet<uint> treinIdLagerDanDrie = SelecteerID(inputStroom, 0, 2);
+
+            // maakt hashset op basis van de functie ZonderLicht er wordt 1 parameter meegegeven
+            // de inputstroom wordt gefilterd door de functie ZonderLicht en worden in de hashset gezet
+            HashSet<uint> treinZonderLicht = ZonderLicht(inputStroom);
+
+            // vergelijkt de twee hashsets en haalt de overeenkomsten eruit
+            treinIdLagerDanDrie.IntersectWith(treinZonderLicht);
+
+            return treinIdLagerDanDrie;
         }
 
         public static HashSet<uint> Opdr3b(List<uint> inputStroom)
         {
-            HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
-            return set;
+            //Haalt alle treinen (uit opdracht 2)
+            HashSet<uint> alleTreinen = Alle(inputStroom);
+          
+            //Haalt treinen met ID lager dan 3 (uit opdracht 3a)
+            HashSet<uint> treinenMetIDLagerDan3 = Opdr3a(inputStroom);
+            //niewuwe hashset voor de resultaten
+            HashSet<uint> resultSet = new HashSet<uint>(alleTreinen);
+
+            //Maakt een exceptWith door de treinen met ID lager dan 3 te verwijderen uit de resultSet
+            resultSet.ExceptWith(treinenMetIDLagerDan3);
+
+            return resultSet;
         }
 
         public static void ToonInfo(uint b)
